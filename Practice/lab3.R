@@ -73,9 +73,8 @@ subset(myemp, is.na(myemp$comm), c('ename','sal'))
 myemp[c(order(myemp$sal)),]
 
 #문제18
-str(myemp)
-summary(myemp)
-dim(myemp)
+nrow(myemp)
+ncol(myemp)
 
 #문제19
 table(myemp$deptno)
