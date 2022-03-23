@@ -27,7 +27,7 @@ img <- html_attr(img, "src")
 img
 
 # 첫 번째 <h2> 태그의 컨텐츠
-h2_1 <- html_nodes(text, "h2:nth-child(9)")
+h2_1 <- html_nodes(text, "h2:nth-child(9)") # h2:nth-of-type(2)
 h2_1 <- html_text(h2_1)
 h2_1
 
@@ -37,7 +37,7 @@ ul <- html_text(ul)
 ul
 
 # 두 번째 <h2> 태그의 컨텐츠
-h2_2 <- html_nodes(text, "h2:nth-child(11)")
+h2_2 <- html_nodes(text, "h2:nth-child(11)") # h2:nth-of-type(2)
 h2_2 <- html_text(h2_2)
 h2_2
 
