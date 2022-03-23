@@ -14,7 +14,7 @@ memo[5] <- gsub("[!123456789<>]", "", memo[5])
 memo[6] <- gsub(" ", "", memo[6])
 memo[7] <- gsub("YOU", "you", memo[7])
 memo[7] <- gsub("OK", "ok", memo[7])
-write(memo, "./data/memo_new1.txt")
+write(memo, "./data/memo_new.txt")
 
 #문제2-2
 memo <- readLines("./data/memo.txt",encoding="UTF-8")
@@ -26,7 +26,7 @@ memo[4] <- gsub("  ", "", memo[4])
 memo[5] <- gsub("[!123456789<>]", "", memo[5])
 memo[6] <- gsub(" ", "", memo[6])
 memo[7] <- tolower(memo[7])
-write(memo, "./data/memo_new2.txt")
+write(memo, "./data/memo_new.txt")
 
 
 #문제3
