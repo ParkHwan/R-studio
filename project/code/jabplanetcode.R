@@ -19,10 +19,13 @@ TPoint <- NULL
 repeat {
   companyNode <- remDr$findElements(using='css selector', 'div > div > dl.content_col2_3.cominfo > dt > a')
   companyData <- sapply(companyNode, function(x) {x$getElementText()})
+  company <- c(company, companyData)
   industryNode <- remDr$findElements(using='css selector', 'div > div > dl.content_col2_3.cominfo > dd:nth-child(2) > span:nth-child(1)')
   industryData <- sapply(industryNode, function(x) {x$getElementText()})
+  industry <- c(industry, industryData)
   TPointNode <- remDr$findElements(using='css selector', 'div > div > dl.content_col2_4 > dd.gf_row > span')
   TPointData <- sapply(TPointNode, function(x) {x$getElementText()})
+  TPoint <- c(TPoint, TPointData)
   if (length(unlist(companyData)) < 10) {
     break
   }
@@ -31,3 +34,6 @@ repeat {
   nextPage$clickElement()
   Sys.sleep(3)
 }
+jobPlanet <- data.frame(unlist(company), unlist(industry), unlist(TPoint))
+write.csv(jobPlanet,"project/output/jobPlanet.csv")
+
