@@ -1,23 +1,25 @@
 #문제1
 library(ggplot2)
 library(dplyr)
-data1 <- read.csv("data/성적2.csv", encoding="UTF-8")
-View(data1)
-boxplot(data1$국어,
-        data1$수학,
+grade <- read.csv("data/성적2.csv", encoding="UTF-8")
+View(grade)
+png("output/result5-1.png")
+boxplot(grade$국어,
+        grade$수학,
         names= c("국어", "수학"),
         range= 1)
-data1$수학 <- ifelse(data1$수학 > 10, round(mean(data1$수학[!is.na(data1$수학)])), data1$수학)
-View(data1)
-data1$수학 <- ifelse(is.na(data1$수학), 7 , data1$수학)
-data1$국어 <- ifelse(is.na(data1$국어), 7 , data1$국어)
-View(data1)
+dev.off()
+grade$수학 <- ifelse(grade$수학 > 10, round(mean(grade$수학[!is.na(grade$수학)])), grade$수학)
+View(grade)
+grade <- grade %>%
+  fill(국어, .direction = "updown") %>%
+  fill(수학, .direction = "updown")
+View(grade)
 
-par(mfrow=c(1,2))
-ggplot(data = data1, aes(x = 국어, y = 수학)) + 
+ggplot(data = grade, aes(x = 국어, y = 수학)) + 
   geom_point(aes(color=성명),
              size = 3)
-ggsave("output/result5.png")
+ggsave("output/result5-5.png")
 
 #문제2
 library(tidyr)
@@ -55,6 +57,7 @@ fruit
 cps <- VCorpus(VectorSource(fruit))
 dtm <- DocumentTermMatrix(cps)
 m <- as.matrix(dtm)
+row.names(m) <- c('듀크', '둘리', '또치', '도우너', '길동', '희동')
 doccom <- m %*% t(m)
 dist(doccom, method = "cosine")
 dist(doccom, method = "Euclidean")

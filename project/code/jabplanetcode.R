@@ -37,3 +37,6 @@ repeat {
 jobPlanet <- data.frame(unlist(company), unlist(industry), unlist(TPoint))
 write.csv(jobPlanet,"project/output/jobPlanet.csv")
 
+jobPlanetData <- read.csv("project/output/jobPlanet.csv")
+jobPlanetData$unlist.company. <- gsub("\\(.*?\\)","",jobPlanetData$unlist.company.)
+View(jobPlanetData)
