@@ -60,6 +60,5 @@ m <- as.matrix(dtm)
 row.names(m) <- c('듀크', '둘리', '또치', '도우너', '길동', '희동')
 doccom <- m %*% t(m)
 dist(doccom, method = "cosine")
-dist(doccom, method = "Euclidean")
 simil(doccom, method = "cosine")
-simil(doccom, method = "Euclidean")
+
