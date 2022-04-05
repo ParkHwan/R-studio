@@ -55,6 +55,6 @@ ggChoropleth(data = myseoulpop,
                  map_id = code,
                  tooltip = name),
              map = seoulmap,
-             palette="RdBu",
+             palette="Blues",
              title = "각 구별 외국인 수",
              interactive = T)
