@@ -1,5 +1,3 @@
-rm(list=ls())
-
 library(RSelenium)
 remDr <- remoteDriver(remoteServerAddr = "localhost" , 
                       port = 4445,
@@ -40,3 +38,9 @@ write.csv(jobPlanet,"project/output/jobPlanet.csv")
 jobPlanetData <- read.csv("project/output/jobPlanet.csv")
 jobPlanetData$unlist.company. <- gsub("\\(.*?\\)","",jobPlanetData$unlist.company.)
 View(jobPlanetData)
+jobPlanetData <- rename(jobPlanetData,
+                        company = unlist.company.,
+                        industry = unlist.industry.,
+                        TPoint = unlist.TPoint.)
+jobPlanetData <- jobPlanetData[,-1]
+
