@@ -35,12 +35,5 @@ repeat {
 jobPlanet <- data.frame(unlist(company), unlist(industry), unlist(TPoint))
 write.csv(jobPlanet,"project/output/jobPlanet.csv")
 
-jobPlanetData <- read.csv("project/output/jobPlanet.csv")
-jobPlanetData$unlist.company. <- gsub("\\(.*?\\)","",jobPlanetData$unlist.company.)
-View(jobPlanetData)
-jobPlanetData <- rename(jobPlanetData,
-                        company = unlist.company.,
-                        industry = unlist.industry.,
-                        TPoint = unlist.TPoint.)
-jobPlanetData <- jobPlanetData[,-1]
+
 
