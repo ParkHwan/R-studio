@@ -2,6 +2,7 @@ library(RSelenium)
 library(XML)
 library(rvest)
 library(httr)
+library(dplyr)
 remDr <- remoteDriver(remoteServerAddr = "localhost" , 
                       port = 4445, browserName = "chrome")
 remDr$open()
@@ -32,7 +33,8 @@ Sys.sleep(1)
 # job_Posting <- sapply(job_Posting_node, function(x) {x$getElementText()})                                       # 채용 공고 관련 컨텐츠 전부 크롤링
 # job_Posting_total <- c(job_Posting_total, unlist(job_Posting))                                                  # 결과값 누적하여 벡터로 출력
 # remDr$goBack() # 페이지 뒤로 가기
-
+# remDr$goForward() # 페이지 앞으로 가기
+# 사람인 채용 공고: 검색어에 따른 채용공고 크롤링
 
 while (TRUE) {
   company_nm_node <- remDr$findElements(using = "css selector", "#default_list_wrap div.company_nm > a> span")
@@ -113,6 +115,13 @@ View(job_Posting_total)
 
 write.csv(job_Posting_total, "project/output/saramin_job_posting.csv", fileEncoding = "UTF-8")
 
-bbb <- read.csv("output/saramin_job_posting.csv", fileEncoding = "UTF-8")
-View(bbb)
-ifelse(bbb$모집내용)
+# 채용공고 기업 주소 크롤링
+notification_info_node <- remDr$findElement(using = "css selector", "#default_list_wrap div.list_body > div:nth-of-type(2) div.job_tit > a")
+notification_info_node$clickElement()
+remDr$getCurrentWindowHandle()
+windowId <- remDr$getWindowHandles()
+remDr$switchToWindow("CDwindow-E821C0459A11CE6ACA84A6328A2E032D")
+remDr$switchToWindow(windowId[[2]]); remDr$goBack()
+company_addr_node <- remDr$findElement(using = "css selector", "#content > div.wrap_jview > div.jview.jview-0-42702901 > div.wrap_jv_cont > div.jv_cont.jv_company > div:nth-child(2) > div.wrap_info > div.info > dl.wide > dd")
+company_addr_node$getElementText(); remDr$closeWindow()
+?remoteDriver
