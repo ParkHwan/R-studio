@@ -34,19 +34,22 @@ iris <- iris
 #(1)
 mean(iris$Sepal.Width)
 sd(iris$Sepal.Width)
-quantile(iris$Sepal.Width)
+quantile(iris$Sepal.Width, 0.75)
 
 #(2)
-hist(iris$Sepal.Width)
+hist(iris$Sepal.Width,
+     main = "꽃받침 너비",
+     xlab = "Sepal.Width")
 
 #(3)
 irismin <- aggregate(iris$Sepal.Width,
-                     by=list(iris$Species),min)
+                     by=list("품종"=iris$Species),min)
 irismin
 
 #(4)
-irismax <- aggregate(iris$Sepal.Width,
-                       list(iris$Species),max)
+irissd <- aggregate(iris$Sepal.Width,
+                       list(iris$Species),sd)
+irissd
 irismax$x - irismin$x
 # 가장 범위가 큰 품종은 setosa이다
 
