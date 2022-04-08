@@ -7,7 +7,7 @@ jobPlanetData <- rename(jobPlanetData,
 jobPlanetData <- jobPlanetData[,-1]
 View(jobPlanetData)
 
-saraminData <- read.csv("project/output/saraminJobPosting.csv", fileEncoding = "UTF-8")
+saraminData <- read.csv("project/output/saramin_job_posting.csv", fileEncoding = "UTF-8")
 saraminData <- saraminData[,-1]
 saraminData$마감일.등록일 <- gsub("\\(.*?\\)","",saraminData$마감일.등록일)
 View(saraminData)
