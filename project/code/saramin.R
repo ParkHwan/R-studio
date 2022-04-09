@@ -62,6 +62,7 @@ while (TRUE) {
   support_info_total <- c(support_info_total, unlist(support_info))
 
   for (i in i:(i + 8)) {
+    next_to_page <- NULL
     # next_to_page <- remDr$findElement(using = "css selector", paste0("#default_list_wrap > div.pagination > a:nth-child(", i, ")"))
     try(next_to_page <- remDr$findElement(using = "css", paste0("[page=", "'", i, "']")))
     if (length(next_to_page) == 0) {
@@ -97,6 +98,7 @@ while (TRUE) {
     support_info <- sapply(support_info_node, function(x) {x$getElementText()})
     support_info_total <- c(support_info_total, unlist(support_info))
   }
+  next_Page <- NULL
   try(next_Page <- remDr$findElement(using = "css selector", "#default_list_wrap > div.pagination > a.btnNext"))
   if (length(next_Page) == 0) {
     break
