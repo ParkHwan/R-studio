@@ -2,7 +2,7 @@ library(RSelenium)
 remDr <- remoteDriver(remoteServerAddr = "localhost" , 
                       port = 4445,
                       browserName = "chrome")
-url <- "https://www.jobplanet.co.kr/companies?sort_by=review_avg_cache&city_id=1"
+url <- "https://www.jobplanet.co.kr/companies?sort_by=review_avg_cache"
 remDr$open()
 remDr$navigate(url)
 

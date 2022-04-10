@@ -1,5 +1,3 @@
-rm(list = ls())
-
 library(RSelenium)
 remDr <- remoteDriver(remoteServerAddr = "localhost" , 
                       port = 4445,
