@@ -37,6 +37,7 @@ industry2 <- hire %>%
   group_by(hire$산업군) %>%
   summarise(meanPoint = mean(평점))
 names(industry2) <- c('산업군','평균')
+#비율로 바꾸기
 
 ggplot(data=industry2,
        aes(x=산업군, y=평균)) + 
