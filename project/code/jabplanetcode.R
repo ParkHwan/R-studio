@@ -2,7 +2,7 @@ library(RSelenium)
 remDr <- remoteDriver(remoteServerAddr = "localhost" , 
                       port = 4445,
                       browserName = "chrome")
-url <- "https://www.jobplanet.co.kr/companies?sort_by=review_avg_cache"
+url <- "https://www.jobplanet.co.kr/companies?&sort_by=approved_reviews_cache"
 remDr$open()
 remDr$navigate(url)
 
@@ -30,7 +30,7 @@ repeat {
   nextCss <- "div.pg_bottom.um_paginnation > article > a.btn_pgnext"
   nextPage<-remDr$findElement(using='css selector', nextCss)
   nextPage$clickElement()
-  Sys.sleep(3)
+  Sys.sleep(5)
 }
 jobPlanet <- data.frame(unlist(company), unlist(industry), unlist(TPoint))
 write.csv(jobPlanet,"project/output/jobPlanet.csv")
