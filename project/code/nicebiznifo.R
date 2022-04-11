@@ -18,7 +18,7 @@ remDr$open()
 nicebizinfo_site <- "https://www.nicebizinfo.com/cm/CM0100M001GE.nice"
 remDr$navigate(nicebizinfo_site)
 
-i <- 1; num <- 7
+i <- 1; num <- 7; n <- 1; pageNo <- 1
 cm_addr_total <- NULL; cm_emp_total <- NULL; cm_sales_total <- NULL
 cm_nm_total <- NULL; cm_EntryRate_total <- NULL; cm_RetirementRate_total <- NULL
 company_list_v <- NULL
@@ -27,25 +27,32 @@ company_list <- read.table("project/output/jobPlanet.csv", sep = ",")[2]
 company_list_v <- company_list[-1,]
 
 company_list_v <- gsub("\\(주\\)|\\(유\\)|㈜|주식회사|유한책임회사|(재)", "", company_list_v)
-company_list_v <- gsub("에스케이", "SK", company_list_v); View(company_list_v)
+(company_list_v <- gsub("에스케이", "SK", company_list_v))
 # nrow(company_list)
-# window.prompt 창 띄우기 코드 remDr$executeScript("alert('이게 alert 로 뜰겁니다.');")
-
+# window.prompt 창 띄우기 코드 remDr$executeScript("alert('alert창에 메세지 입력할 수 있다.');")
+i <- 1449 # 시작 위치 설정
 while (i < nrow(company_list)) {
   cat(i, "번째 기업 검색\n")
   cm_search <- remDr$findElement(using = "css selector", "#CM0100M001GE_itgSrch")
   cm_search$sendKeysToElement(list(company_list_v[i], key = "enter"))
   Sys.sleep(1)
   repeat {
-    n <- 1
-    cat("tr:nth-child(", num, "):", n,"번째 기업 매칭 중\n", sep = "")
+    if (num == 187) {
+      next_page <- remDr$findElement(using = "css selector", "div.pagingList > ul > li > a.next")
+      next_page$clickElement()
+      num <- 7; n <- 1
+      pageNo <- pageNo + 1
+      Sys.sleep(1)
+      next
+    }
+    cat("tr:nth-child(", num, "):", n,"번째 기업 매칭 중", "<", pageNo, "페이지>\n",  sep = "")
     cm_node <- NULL
     try(cm_node <- remDr$findElement(using = "css selector", paste0("div.mb60 > table > tbody > tr:nth-child(", num, ") > th > span> a")))
     try(cm_nm <- gsub("\\(주\\)|\\(유\\)|㈜|주식회사|유한책임회사|(재)", "", cm_node$getElementText()))
     if (company_list_v[i] == cm_nm) {
       cm_nm_total <- c(cm_nm_total, cm_nm)
       cm_node$clickElement()
-      num <- 7
+      num <- 7; n <- 1; pageNo <- 1
       break
     } else if (length(cm_node) == 0) {
       cm_nm_total <- c(cm_nm_total, company_list_v[i])
@@ -59,6 +66,7 @@ while (i < nrow(company_list)) {
     num <- num + 9; n <- n + 1
   }
   Sys.sleep(2)
+
   alertmessage <- NULL
   try(alertmessage <- remDr$getAlertText())
   if (length(alertmessage) != 0) {
@@ -75,19 +83,27 @@ while (i < nrow(company_list)) {
     i <- i + 1; num <- 7
     next
   }
+  page_error_node <- NULL
+  try(page_error_node <- remDr$findElement(using = "css selector", "body > div.tac > a"), silent = F)
+  if (length(page_error_node) != 0) {
+    cm_addr <- NA; cm_addr_total <- c(cm_addr_total, cm_addr)
+    cm_emp <- NA; cm_emp_total <- c(cm_emp_total, cm_emp)
+    cm_sales <- NA; cm_sales_total <- c(cm_sales_total, cm_sales)
+    cm_EntryRate <- NA; cm_EntryRate_total <- c(cm_EntryRate_total, cm_EntryRate)
+    cm_RetirementRate <- NA; cm_RetirementRate_total <- c(cm_RetirementRate_total, cm_RetirementRate)
+    page_error_node$clickElement()
+    i <- i + 1
+    next
+  }
+
   cm_addr_node <- remDr$findElement(using = "css selector", "div.mb10 > table > tbody > tr:nth-child(1) > td:nth-child(2) > div.bg2 > strong")
   cm_addr <- cm_addr_node$getElementText()
   cm_addr_total <- c(cm_addr_total, unlist(cm_addr))
   
   cm_emp_node <- NULL
-  try(cm_emp_node <- remDr$findElement(using = "css selector", "div.sp4 > table > tbody > tr:nth-child(4) > td:nth-child(8)"))
+  try(cm_emp_node <- remDr$findElement(using = "css selector", "div.sp2 > table > tbody > tr > td:nth-child(3) > div.bg6 > strong"))
   if (length(cm_emp_node) == 0) {
-    try(cm_emp_node <- remDr$findElement(using = "css selector", "div.sp2 > table > tbody > tr > td:nth-child(3) > div.bg6 > strong"))
-    if (length(cm_emp_node) == 0) {
-      cm_emp <- NA
-    } else {
-      cm_emp <- cm_emp_node$getElementText()
-    }
+    cm_emp <- NA
   } else {
     cm_emp <- cm_emp_node$getElementText()
   }
@@ -127,9 +143,9 @@ while (i < nrow(company_list)) {
   cat("기업명:",length(cm_nm_total), "본사주소:", length(cm_addr_total), "직원수:", length(cm_emp_total),
       "매출액(2020년):", length(cm_sales_total), "입사율(연간 입사자):",length(cm_EntryRate_total), 
       "퇴사율(연간 퇴사자):", length(cm_RetirementRate_total), "\n")
-  Sys.sleep(1)
 }
-cm_nm_total[4580]
+
+cm_EntryRate_total[6826]
 cm_Info_total <- NULL
 cm_Info_total <- data.frame(cm_nm_total, cm_addr_total, cm_emp_total,
                             cm_sales_total, cm_EntryRate_total, cm_RetirementRate_total); str(cm_addr_total)
