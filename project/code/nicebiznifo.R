@@ -30,7 +30,7 @@ company_list_v <- gsub("\\(주\\)|\\(유\\)|㈜|주식회사|유한책임회사|
 (company_list_v <- gsub("에스케이", "SK", company_list_v))
 # nrow(company_list)
 # window.prompt 창 띄우기 코드 remDr$executeScript("alert('alert창에 메세지 입력할 수 있다.');")
-i <- 1449 # 시작 위치 설정
+
 while (i < nrow(company_list)) {
   cat(i, "번째 기업 검색\n")
   cm_search <- remDr$findElement(using = "css selector", "#CM0100M001GE_itgSrch")
@@ -145,7 +145,6 @@ while (i < nrow(company_list)) {
       "퇴사율(연간 퇴사자):", length(cm_RetirementRate_total), "\n")
 }
 
-cm_EntryRate_total[6826]
 cm_Info_total <- NULL
 cm_Info_total <- data.frame(cm_nm_total, cm_addr_total, cm_emp_total,
                             cm_sales_total, cm_EntryRate_total, cm_RetirementRate_total); str(cm_addr_total)
