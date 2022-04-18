@@ -9,6 +9,9 @@ jobData <- read.csv("project/output/jobdata3.csv")
 
 View(jobData)
 
+jobDataSmry <- jobData[,-1]
+summary(jobDataSmry)
+
 df <- jobData %>%
   group_by(jobData$평점) %>%
   dplyr::summarise(기업수 = n())
